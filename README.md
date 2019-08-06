@@ -4,7 +4,7 @@ Demonstration of a simple, command line timer in Python.  Makes use of a [quee](
 
 ## Use
 
-```python
+```sh
 python timer.py --timer 20 --unit seconds
 ```
 
