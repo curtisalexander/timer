@@ -5,7 +5,6 @@ from datetime import timedelta
 import argparse
 import queue
 import random
-import sys
 import time
 
 
@@ -74,7 +73,7 @@ def process_queue(q, pool, func):
 def main(t_duration, s_duration, sayings):
     # start
     start = datetime.now() + timedelta(seconds=5)
-    timer = timedelta(seconds=p_duration)
+    timer = timedelta(seconds=t_duration)
 
     print("Starting in 5 seconds...\n")
 
@@ -93,30 +92,21 @@ def main(t_duration, s_duration, sayings):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Pomodoro timer")
+    parser = argparse.ArgumentParser(description="Timer")
 
     parser.add_argument(
-        "-d", "--duration", help="Pomodoro duration in minutes", type=int
+        "-t", "--timer", help="Overall timer duration in minutes", type=int
     )
 
-    parser.add_argument("-d", "--duration", help="Duration in minutes", type=int)
-    parser.add_argument(
-        "-R", action="store_false", help="Copy all files and directories recursively"
-    )
-
-    parser.add_argument("infile", type=argparse.FileType("r"), help="file to be copied")
-
-    parser.add_argument(
-        "outfile", type=argparse.FileType("w"), help="file to be created"
-    )
+    parser.add_argument("-s", "--sayings", help="Sayings duration in minutes", type=int)
 
     args = parser.parse_args()
 
     # how long will the timer last?
-    timer_duration_seconds = 20
+    timer_duration_seconds = args.timer
 
     # how many seconds will elapse until printing encouragement
-    saying_duration_seconds = 2
+    sayings_duration_seconds = args.sayings
 
     # list of encouraging sayings
     sayings = [
@@ -126,4 +116,4 @@ if __name__ == "__main__":
         "Wow, you are accomplishing so much!",
     ]
 
-    main(timer_duration_seconds, saying_duration_seconds, sayings)
+    main(timer_duration_seconds, sayings_duration_seconds, sayings)
