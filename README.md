@@ -5,7 +5,7 @@ Demonstration of a simple, command line timer in Python.  Makes use of a [thread
 ## Use
 
 ```python
-python timer.py --duration 20 --sayings 5
+python timer.py --timer 20 --sayings 5
 ```
 
 ## Background
