@@ -1,6 +1,6 @@
 # timer
 
-Demonstration of a simple, command line timer in Python.  Makes use of a thread pool and priority queues.
+Demonstration of a simple, command line timer in Python.  Makes use of a [thread pool](https://docs.python.org/3/library/concurrent.futures.html) and a [priority que](https://docs.python.org/3/library/queue.html).
 
 ## Use
 
