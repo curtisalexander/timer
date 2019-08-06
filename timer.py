@@ -1,62 +1,25 @@
-from concurrent.futures import ThreadPoolExecutor
+from collections import deque
 from datetime import datetime
 from datetime import timedelta
 
 import argparse
-import queue
-import random
+import sys
 import time
 
 
-def print_saying(count, saying):
-    """ Just prints a saying - nothing more and nothing less.
+def countdown(timer, end):
+    next_time = timer.popleft()
 
-    Parameters
-    ----------
-    count : count of printed saying
-
-    saying : saying to print
-    """
-    now = datetime.now().time().strftime("%H:%M:%S")
-    print(f"{count}: The time is now {now} ==> {saying}\n")
-
-
-def process_queue(q, pool, func):
-    """ Process a priority queue based on time
-
-    The priority within the queue is the time at which the item can execute.
-
-    Continually poll the queue, popping an item only when the current time is
-    greater than the time at which the item is permitted to execute.
-
-    Parameters
-    ----------
-    q : an instance of a priority queue
-
-    pool : a thread pool
-
-    func : the function to be executed by a thread in the threadpool
-
-    Returns
-    -------
-    null
-    """
-
-    # get first item in the queue
-    priority, count, saying = q.get()
-
-    while True:
-        diff = (priority - datetime.now()).total_seconds()
-
+    while timer:
+        diff = (next_time - datetime.now()).total_seconds()
         if diff <= 0:
-            pool.submit(func, (count + 1), saying)
+            mins, secs = divmod((end - next_time).total_seconds(), 60)
+            timeformat = f"{int(mins):02d}:{int(secs):02d} remaining"
+            print(timeformat, end="\r")
+            sys.stdout.flush()
 
-            try:
-                priority, count, saying = q.get(timeout=5.0)
-            except queue.Empty:
-                print("All done!  Congratulations on finishing!")
-                break
-
+            next_time = timer.popleft()
+        else:
             # sliding scale for sleeping
             # based on an idea from the pause package
             # https://pypi.python.org/pypi/pause
@@ -69,51 +32,44 @@ def process_queue(q, pool, func):
             else:
                 time.sleep(1)
 
-
-def main(t_duration, s_duration, sayings):
-    # start
-    start = datetime.now() + timedelta(seconds=5)
-    timer = timedelta(seconds=t_duration)
-
-    print("Starting in 5 seconds...\n")
-
-    # priority queue instance
-    q = queue.PriorityQueue()
-
-    # build up the priority queue
-    for i in range((timer.seconds // s_duration) + 1):
-        next_time = start + timedelta(seconds=(i * s_duration))
-        q.put((next_time, i, random.choice(sayings)))
-
-    # process the queue
-    with ThreadPoolExecutor(max_workers=3) as pool:
-        process_queue(q, pool, print_saying)
+    time.sleep(1)
+    now_display = datetime.now().time().strftime("%H:%M:%S")
+    print(f"\n\nGoodbye!  The time is now {now_display}\n\n")
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(description="Timer")
-
+    parser.add_argument("-t", "--timer", help="Timer duration", required=True, type=int)
     parser.add_argument(
-        "-t", "--timer", help="Overall timer duration in minutes", type=int
+        "-u",
+        "--unit",
+        help="Unit (seconds or minutes)",
+        required=True,
+        choices=["seconds", "minutes"],
     )
-
-    parser.add_argument("-s", "--sayings", help="Sayings duration in minutes", type=int)
-
     args = parser.parse_args()
 
     # how long will the timer last?
-    timer_duration_seconds = args.timer
+    if args.unit == "seconds":
+        timer_seconds = args.timer
+    else:
+        timer_seconds = args.timer * 60
 
-    # how many seconds will elapse until printing encouragement
-    sayings_duration_seconds = args.sayings
+    start = datetime.now() + timedelta(seconds=2)
+    start_display = start.time().strftime("%H:%M:%S")
+    interval = timedelta(seconds=timer_seconds)
+    end = start + interval
+    end_display = end.time().strftime("%H:%M:%S")
 
-    # list of encouraging sayings
-    sayings = [
-        "Keep it up!",
-        "Just a little bit longer.",
-        "Focus, focus, focus!",
-        "Wow, you are accomplishing so much!",
-    ]
+    print(f"Start time is {start_display}")
+    print(f"End time is {end_display}\n")
 
-    main(timer_duration_seconds, sayings_duration_seconds, sayings)
+    print("---------")
+    print("| Timer |")
+    print("---------\n")
+
+    timer = deque()
+    for s in range((interval.seconds + 1)):
+        timer.append(start + timedelta(seconds=(s)))
+
+    countdown(timer, end)
