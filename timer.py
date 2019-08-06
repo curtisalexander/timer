@@ -13,6 +13,7 @@ def countdown(timer, end):
     while timer:
         diff = (next_time - datetime.now()).total_seconds()
         if diff <= 0:
+            # from Martijn Pieters - https://stackoverflow.com/a/25189629
             mins, secs = divmod((end - next_time).total_seconds(), 60)
             timeformat = f"{int(mins):02d}:{int(secs):02d} remaining"
             print(timeformat, end="\r")
