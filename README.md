@@ -1,6 +1,6 @@
 # timer
 
-Demonstration of a simple, command line timer in Python.  Makes use of a quee](https://docs.python.org/3/library/queue.html).
+Demonstration of a simple, command line timer in Python.  Makes use of a [quee](https://docs.python.org/3/library/collections.html#collections.deque).
 
 ## Use
 
