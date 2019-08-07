@@ -12,3 +12,6 @@ python timer.py --timer 20 --unit seconds
 
 This repo is intended to be used as an actual timer but also serves as an experiment in utilizing [PyOxidizer](https://github.com/indygreg/PyOxidizer) to build a Python application.
 
+## Python Application
+
+Brought in as a submodule into the [pyoxidizer-timer](https://github.com/curtisalexander/pyoxidizer-timer) repo.  Built into a single executable, available for [download](https://github.com/curtisalexander/pyoxidizer-timer/releases).
