@@ -10,7 +10,7 @@ python timer.py --timer 20 --unit seconds
 
 ## Background
 
-This repo is intended to be used as an actual timer but also serves as an experiment in utilizing [PyOxidizer](https://github.com/indygreg/PyOxidizer) to build a Python application.
+This repo may be used as a simple, command line timer.  However, it really serves as an experiment in utilizing [PyOxidizer](https://github.com/indygreg/PyOxidizer) to build a Python application.
 
 ## Python Application
 
