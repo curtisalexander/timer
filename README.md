@@ -14,4 +14,4 @@ This repo may be used as a simple, command line timer.  However, it really serve
 
 ## Python Application
 
-Brought in as a submodule into the [pyoxidizer-timer](https://github.com/curtisalexander/pyoxidizer-timer) repo.  Built into a single executable, available for [download](https://github.com/curtisalexander/pyoxidizer-timer/releases).
+Brought in as a [submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) into the [pyoxidizer-timer](https://github.com/curtisalexander/pyoxidizer-timer) repo.  Built into a single executable, available for [download](https://github.com/curtisalexander/pyoxidizer-timer/releases).
